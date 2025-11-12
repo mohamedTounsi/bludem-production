@@ -43,8 +43,9 @@ export default function Hero() {
   return (
     <div className="relative w-full h-screen overflow-hidden">
       {/* ✅ Animated background video */}
+      {/* ✅ Animated background video */}
       <motion.video
-        key={isMobile ? "mobile-video" : "desktop-video"}
+        key="hero-video"
         initial={{ opacity: 0, scale: 1.05 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.2, ease: "easeOut" }}
@@ -52,12 +53,9 @@ export default function Hero() {
         muted
         loop
         playsInline
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
       >
-        <source
-          src={isMobile ? "bludemheromobile.mp4" : "bludemheromobile.mp4"}
-          type="video/mp4"
-        />
+        <source src="/bludemherof.mp4" type="video/mp4" />
       </motion.video>
 
       {/* Overlay */}

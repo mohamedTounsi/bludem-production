@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Play } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import Image from "next/image";
 
 export default function RecentWork() {
   const [activeProject, setActiveProject] = useState(0);
@@ -181,6 +182,7 @@ export default function RecentWork() {
           </motion.div>
 
           {/* Cover Image */}
+          {/* Cover Image */}
           <AnimatePresence mode="wait">
             <motion.div
               key={current.id}
@@ -196,13 +198,15 @@ export default function RecentWork() {
                 rel="noopener noreferrer"
                 className="block relative w-full h-full"
               >
-                <motion.img
-                  src={current.coverImage}
+                <Image
+                  src={`/${current.coverImage}`}
                   alt={current.name}
-                  className="w-full h-full object-cover"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.5 }}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  priority={true} // optional: preload for faster initial render
                 />
+
                 {/* Play Button Overlay */}
                 <motion.div
                   className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/50 transition-colors opacity-0 group-hover:opacity-100"
