@@ -43,7 +43,6 @@ export default function Hero() {
   return (
     <div className="relative w-full h-screen overflow-hidden">
       {/* ✅ Animated background video */}
-      {/* ✅ Animated background video */}
       <motion.video
         key="hero-video"
         initial={{ opacity: 0, scale: 1.05 }}
@@ -53,7 +52,10 @@ export default function Hero() {
         muted
         loop
         playsInline
+        disablePictureInPicture
+        controlsList="nodownload"
         className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        style={{ WebkitPlaysinline: "true" }}
       >
         <source src="/bludemherof.mp4" type="video/mp4" />
       </motion.video>
