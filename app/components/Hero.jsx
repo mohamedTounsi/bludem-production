@@ -17,6 +17,17 @@ export default function Hero() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  // Force video to play on mount (helps mobile autoplay)
+  useEffect(() => {
+    const video = document.querySelector < HTMLVideoElement > "video";
+    if (video) {
+      video.muted = true; // just in case
+      video.play().catch(() => {
+        console.log("Autoplay blocked on this device");
+      });
+    }
+  }, []);
+
   const navLinks = [
     { label: "ABOUT", href: "#about" },
     { label: "WORKS", href: "#works" },
@@ -33,7 +44,7 @@ export default function Hero() {
 
   const menuItemVariants = {
     hidden: { opacity: 0, x: 20 },
-    visible: (i) => ({
+    visible: (i: number) => ({
       opacity: 1,
       x: 0,
       transition: { delay: i * 0.1 },
@@ -63,7 +74,7 @@ export default function Hero() {
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/40"></div>
 
-      {/* ✅ Glowing logo animation */}
+      {/* Glowing logo */}
       <motion.div
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
@@ -77,7 +88,6 @@ export default function Hero() {
           height={100}
           className="w-10 sm:w-20"
         />
-
         <div
           style={{ fontFamily: "'Playfair Display', serif" }}
           className="text-white flex flex-col text-sm sm:text-lg font-light tracking-widest"
