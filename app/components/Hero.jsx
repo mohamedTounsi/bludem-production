@@ -17,15 +17,54 @@ export default function Hero() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Force video to play on mount (helps mobile autoplay)
+  // ✅ Improved iPhone autoplay function
   useEffect(() => {
-    const video = document.querySelector < HTMLVideoElement > "video";
-    if (video) {
-      video.muted = true; // just in case
-      video.play().catch(() => {
-        console.log("Autoplay blocked on this device");
-      });
-    }
+    const playVideo = async () => {
+      const video = document.querySelector("video");
+      if (video) {
+        video.muted = true;
+        video.playsInline = true;
+
+        try {
+          // Try direct play first
+          const playPromise = video.play();
+          if (playPromise !== undefined) {
+            playPromise
+              .then(() => {
+                console.log("Video autoplay successful");
+              })
+              .catch(() => {
+                console.log("Autoplay blocked, waiting for user interaction");
+                // Fallback: play on first user interaction
+                const playOnInteraction = async () => {
+                  try {
+                    await video.play();
+                    document.removeEventListener(
+                      "touchstart",
+                      playOnInteraction
+                    );
+                    document.removeEventListener("click", playOnInteraction);
+                  } catch (err) {
+                    console.log("Play failed:", err);
+                  }
+                };
+                document.addEventListener("touchstart", playOnInteraction, {
+                  once: true,
+                });
+                document.addEventListener("click", playOnInteraction, {
+                  once: true,
+                });
+              });
+          }
+        } catch (err) {
+          console.log("Video play error:", err);
+        }
+      }
+    };
+
+    // Wait for DOM to be fully ready
+    const timer = setTimeout(playVideo, 300);
+    return () => clearTimeout(timer);
   }, []);
 
   const navLinks = [
@@ -66,7 +105,10 @@ export default function Hero() {
         disablePictureInPicture
         controlsList="nodownload"
         className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-        style={{ WebkitPlaysinline: "true" }}
+        style={{
+          WebkitPlaysinline: "true",
+          WebkitUserSelect: "none",
+        }}
       >
         <source src="/bludemherof.mp4" type="video/mp4" />
       </motion.video>
