@@ -44,7 +44,7 @@ export default function Hero() {
 
   const menuItemVariants = {
     hidden: { opacity: 0, x: 20 },
-    visible: (i: number) => ({
+    visible: (i) => ({
       opacity: 1,
       x: 0,
       transition: { delay: i * 0.1 },
